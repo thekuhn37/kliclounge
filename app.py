@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import logging
 from flask_cors import CORS
 from pytube import YouTube
@@ -7,19 +7,33 @@ from youtube_transcript_api.formatters import TextFormatter
 import textwrap
 import openai
 import os
+from pathlib import Path
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="build/web")
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
-print(f"API Key: {openai_api_key}")  # Add this line for debugging
-if not openai_api_key:
-    app.logger.error(
-        "OpenAI API key not found. Please set the OPENAI_API_KEY environment variable."
-    )
-openai.api_key = openai_api_key
+# print(f"API Key: {openai_api_key}")  # Add this line for debugging
+# if not openai_api_key:
+#     app.logger.error(
+#         "OpenAI API key not found. Please set the OPENAI_API_KEY environment variable."
+#     )
+# openai.api_key = openai_api_key
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
+
+# Define the static folder explicitly
+static_folder_path = os.path.abspath("build/web")
+
+
+@app.route("/")
+def serve_index():
+    return send_from_directory(static_folder_path, "index.html")
+
+
+@app.route("/<path:path>")
+def serve_file(path):
+    return send_from_directory(static_folder_path, path)
 
 
 def get_video_id(video_url):
