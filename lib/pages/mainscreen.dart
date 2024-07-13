@@ -3,9 +3,35 @@ import 'package:kliclounge/constants/gaps.dart';
 import 'package:kliclounge/constants/sizes.dart';
 import 'package:kliclounge/pages/mainscreeneng.dart';
 import 'package:kliclounge/pages/pastdetailscreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  final GlobalKey _explainKey = GlobalKey();
+  final GlobalKey _formKey = GlobalKey();
+
+  void _scrollToSection(GlobalKey key) {
+    final context = key.currentContext!;
+    Scrollable.ensureVisible(context,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +45,7 @@ class MainScreen extends StatelessWidget {
           foregroundColor: Colors.white,
           flexibleSpace: Column(
             children: [
+              Gaps.v14,
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -42,7 +69,6 @@ class MainScreen extends StatelessWidget {
                   Gaps.h32,
                 ],
               ),
-              Gaps.v14,
               Row(
                 children: [
                   const SizedBox(
@@ -55,10 +81,9 @@ class MainScreen extends StatelessWidget {
                   const SizedBox(
                     width: 60,
                   ),
-                  Text(
+                  const Text(
                     'KRX  상장기업  IR  라운지',
                     style: TextStyle(
-                      color: Colors.grey[800],
                       fontWeight: FontWeight.w600,
                       fontSize: Sizes.size32,
                     ),
@@ -71,7 +96,9 @@ class MainScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _scrollToSection(_explainKey);
+                          },
                           child: const Text(
                             '소개',
                             style: TextStyle(
@@ -81,7 +108,9 @@ class MainScreen extends StatelessWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _scrollToSection(_formKey);
+                          },
                           child: const Text(
                             '참가신청',
                             style: TextStyle(
@@ -91,9 +120,11 @@ class MainScreen extends StatelessWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _launchUrl('https://www.youtube.com/@IRTV');
+                          },
                           child: const Text(
-                            '최신 IR',
+                            '영상시청',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: Sizes.size28,
@@ -110,7 +141,7 @@ class MainScreen extends StatelessWidget {
                             );
                           },
                           child: const Text(
-                            '지난 IR',
+                            '스크립트(Beta)',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: Sizes.size28,
@@ -133,6 +164,7 @@ class MainScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             Stack(
@@ -166,6 +198,7 @@ class MainScreen extends StatelessWidget {
             Gaps.v96,
             Gaps.v32,
             Center(
+              key: _explainKey, // Key to identify the section
               child: SizedBox(
                 // width: 1400,
                 // height: 600,
@@ -179,6 +212,7 @@ class MainScreen extends StatelessWidget {
             Gaps.v96,
             Gaps.v96,
             Stack(
+              key: _formKey, // Key to identify the section
               children: [
                 // Colored box at the bottom
                 Container(
@@ -330,7 +364,7 @@ class MainScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),

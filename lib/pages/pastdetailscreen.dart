@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:kliclounge/constants/gaps.dart';
 import 'package:kliclounge/constants/sizes.dart';
 import 'package:kliclounge/pages/mainscreeneng.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PastDetailScreen extends StatefulWidget {
   const PastDetailScreen({super.key});
@@ -72,6 +73,15 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
     }
   }
 
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,16 +129,18 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreenEng(),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
-                    style: TextButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.black),
+                    style: ButtonStyle(
+                      foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.pressed)) {
+                          return Colors
+                              .black; // Color when the button is pressed
+                        }
+                        return Colors.black; // Default color
+                      }),
+                    ),
                     child: const Text(
                       'KRX  상장기업  IR  라운지',
                       style: TextStyle(
@@ -158,7 +170,9 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: const Text(
                             '참가신청',
                             style: TextStyle(
@@ -168,9 +182,11 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _launchUrl('https://www.youtube.com/@IRTV');
+                          },
                           child: const Text(
-                            '최신 IR',
+                            '영상시청',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: Sizes.size28,
@@ -219,11 +235,16 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
               children: [
                 Gaps.v96,
                 const Text(
-                  '지난 IR - 스크립트 추출 & 번역 서비스 ',
+                  '지난 IR - 스크립트 추출 & 번역 서비스(Beta)',
                   style: TextStyle(
                     fontSize: Sizes.size28,
                     fontWeight: FontWeight.w600,
                   ),
+                ),
+                Gaps.v32,
+                const Text(
+                  '유튜브 IR 채널 내 과거 IR 영상의 링크주소(예시:https://www.youtube.com/watch?v=-UTPEtkQGGY&t=12s)를\n복사하여 아래 박스에 입력 후 버튼을 클릭 시 스크립트 일부가 표시됩니다. 이후 스크립트요약, 영문번역, 중문번역은 \nOpenAI회사의 챗GPT API를 통하여 화면 아래에 표시됩니다. ',
+                  style: TextStyle(fontSize: Sizes.size16),
                 ),
                 Gaps.v32,
                 TextField(

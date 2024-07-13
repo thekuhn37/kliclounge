@@ -44,14 +44,14 @@ class MainScreenEng extends StatelessWidget {
                   width: 60,
                 ),
                 const Text(
-                  'KRX Listed Company IR Lounge',
+                  'KRX Listed Company IR Lounge(BETA)',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: Sizes.size32,
                   ),
                 ),
                 const SizedBox(
-                  width: 200,
+                  width: 150,
                 ),
                 Expanded(
                   child: Row(
