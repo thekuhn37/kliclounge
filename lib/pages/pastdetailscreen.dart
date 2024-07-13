@@ -287,7 +287,7 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                           ElevatedButton(
                             onPressed: () {
                               _askOpenAI(
-                                  'Summarize the main contents in 4 sentences only in Korean');
+                                  'Summarize the main contents in 8 sentences only in Korean');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.cyan,
@@ -305,7 +305,8 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                           Gaps.h32,
                           ElevatedButton(
                             onPressed: () {
-                              _askOpenAI('Translate the script in English');
+                              _askOpenAI(
+                                  'Translate the script as much as 30 sentences in English');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.cyan,
@@ -323,7 +324,8 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                           Gaps.h32,
                           ElevatedButton(
                             onPressed: () {
-                              _askOpenAI('Translate the script in Chinese');
+                              _askOpenAI(
+                                  'Translate the script as much as 30 sentences in Chinese');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.cyan,
