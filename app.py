@@ -9,7 +9,10 @@ import openai
 import os
 from pathlib import Path
 
-app = Flask(__name__, static_folder="build/web")
+# Define the static folder explicitly
+static_folder_path = os.path.abspath("build/web")
+
+app = Flask(__name__, static_folder=static_folder_path)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -22,13 +25,15 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # logging.basicConfig(level=logging.DEBUG)
 
-# Define the static folder explicitly
-static_folder_path = os.path.abspath("build/web")
-
 
 @app.route("/")
 def serve_index():
     return send_from_directory(static_folder_path, "index.html")
+
+
+@app.route("/health")
+def health_check():
+    return "Server is running"
 
 
 @app.route("/<path:path>")
