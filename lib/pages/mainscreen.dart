@@ -35,6 +35,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isMobile = screenSize.width < 600;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -89,68 +92,71 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   const SizedBox(
-                    width: 300,
+                    width: 20,
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            _scrollToSection(_explainKey);
-                          },
-                          child: const Text(
-                            '소개',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Sizes.size28,
+                  if (!isMobile) const Spacer(),
+                  if (!isMobile)
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              _scrollToSection(_explainKey);
+                            },
+                            child: const Text(
+                              '소개',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: Sizes.size28,
+                              ),
                             ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _scrollToSection(_formKey);
-                          },
-                          child: const Text(
-                            '참가신청',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Sizes.size28,
+                          TextButton(
+                            onPressed: () {
+                              _scrollToSection(_formKey);
+                            },
+                            child: const Text(
+                              '참가신청',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: Sizes.size28,
+                              ),
                             ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _launchUrl('https://www.youtube.com/@IRTV');
-                          },
-                          child: const Text(
-                            '영상시청',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Sizes.size28,
+                          TextButton(
+                            onPressed: () {
+                              _launchUrl('https://www.youtube.com/@IRTV');
+                            },
+                            child: const Text(
+                              '영상시청',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: Sizes.size28,
+                              ),
                             ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PastDetailScreen(),
-                              ), // Pass the target widget
-                            );
-                          },
-                          child: const Text(
-                            '스크립트(Beta)',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: Sizes.size28,
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PastDetailScreen(),
+                                ), // Pass the target widget
+                              );
+                            },
+                            child: const Text(
+                              '스크립트(Beta)',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: Sizes.size28,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  )
                 ],
               ),
               Gaps.v48,
@@ -173,7 +179,7 @@ class _MainScreenState extends State<MainScreen> {
                 // Colored box at the bottom
                 Container(
                   color: Colors.cyan, // Change color as desired
-                  height: 600.0,
+                  height: isMobile ? 300.0 : 600.0,
                   width: double.infinity, // Fills entire horizontal space
                 ),
 
@@ -184,8 +190,8 @@ class _MainScreenState extends State<MainScreen> {
                   right: 0.0, // Align right
                   child: Center(
                     child: SizedBox(
-                      width: 1400,
-                      height: 600,
+                      width: isMobile ? 300 : 1400,
+                      height: isMobile ? 300 : 600,
                       child: Image.asset(
                         'assets/images/banner3.png',
                         fit: BoxFit.cover,
@@ -200,8 +206,8 @@ class _MainScreenState extends State<MainScreen> {
             Center(
               key: _explainKey, // Key to identify the section
               child: SizedBox(
-                // width: 1400,
-                // height: 600,
+                width: isMobile ? screenSize.width * 0.9 : 1400,
+                height: isMobile ? 200 : 600,
                 child: Image.asset(
                   'assets/images/main_explain.png',
                   fit: BoxFit.cover,
@@ -217,7 +223,7 @@ class _MainScreenState extends State<MainScreen> {
                 // Colored box at the bottom
                 Container(
                   color: Colors.cyan, // Change color as desired
-                  height: 600.0,
+                  height: isMobile ? 600.0 : 600.0,
                   width: double.infinity, // Fills entire horizontal space
                 ),
 
@@ -227,11 +233,14 @@ class _MainScreenState extends State<MainScreen> {
                   left: 0.0, // Align left
                   right: 0.0, // Align right
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 200, vertical: 60),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isMobile ? 20 : 200,
+                      vertical: isMobile ? 20 : 60,
+                    ),
                     child: Center(
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Flexible(
                             flex: 1,

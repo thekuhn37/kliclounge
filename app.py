@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 
 # Define the static folder explicitly
-static_folder_path = os.path.abspath("build/web")
+static_folder_path = os.path.abspath("static")
 
 app = Flask(__name__, static_folder=static_folder_path)
 CORS(app, resources={r"/*": {"origins": "*"}})

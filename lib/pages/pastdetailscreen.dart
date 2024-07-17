@@ -14,7 +14,7 @@ class PastDetailScreen extends StatefulWidget {
 }
 
 class _PastDetailScreenState extends State<PastDetailScreen> {
-  final String baseUrl = "https://kliclounge-483d821c8f3a.herokuapp.com/";
+  final String baseUrl = "https://klicirlounge-6a9c5137acb7.herokuapp.com";
 
   final TextEditingController _controller = TextEditingController();
   String? _transcript;
@@ -347,12 +347,19 @@ class _PastDetailScreenState extends State<PastDetailScreen> {
                 ],
                 Gaps.v48,
                 if (_response != null) ...[
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Response: $_response',
-                    style: const TextStyle(fontSize: Sizes.size18),
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Response: $_response',
+                        style: const TextStyle(fontSize: Sizes.size18),
+                      ),
+                      const SizedBox(
+                        height: 80,
+                      )
+                    ],
                   ),
                 ]
               ],
